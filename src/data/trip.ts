@@ -1,5 +1,5 @@
 export const trip = {
-  id: 'itsumen-yuzawa-2026', title: 'いつメン越後湯沢旅行 2026', startDate: '2026-10-11', endDate: '2026-10-12', timezone: 'Asia/Tokyo', baseSpotId: 'naspa', updatedAt: '2026-10-01', updateSummary: '仲間図鑑を１画面に整理。未確認事項は調整中です。', schemaVersion: 1,
+  id: 'itsumen-yuzawa-2026', title: 'いつメン越後湯沢旅行 2026', startDate: '2026-10-11', endDate: '2026-10-12', timezone: 'Asia/Tokyo', baseSpotId: 'naspa', updatedAt: '2026-10-01', updateSummary: 'NASPA宿泊予約と夕朝食付きプランを反映。未確認事項は調整中です。', schemaVersion: 1,
 } as const;
 export type DayId = 'day1' | 'day2';
 export type PlanStatus = 'confirmed' | 'tentative' | 'pending' | 'cancelled';
