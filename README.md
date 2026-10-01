@@ -2,6 +2,8 @@
 
 2026年10月11日〜12日のスマートフォン向けWebしおりです。
 
+公開URL: [https://itumen.vercel.app/](https://itumen.vercel.app/)
+
 ## 起動
 
 ```sh
