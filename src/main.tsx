@@ -7,6 +7,7 @@ import{events,dayEvents,type Event}from'./data/events';
 import{spots,spotById,type Spot}from'./data/spots';
 import{reservationById,reservationLabel}from'./data/reservations';
 import{packingItems}from'./data/packing';
+import{homeHotspots,memberHotspots,type PosterHotspot}from'./data/posterHotspots';
 import{nextEvent,tripPhase}from'./domain/status';
 import './style.css';
 const iconPaths:Record<string,string>={home:'M3 10 12 3l9 7v10H3z M9 20v-6h6v6',route:'M5 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm14 10a3 3 0 1 0 0 6 3 3 0 0 0 0-6z M7 7h8a4 4 0 0 1 0 8H9',members:'M8 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm8 0a3 3 0 1 0 0-6 M2 21v-3a6 6 0 0 1 12 0v3z M16 15a5 5 0 0 1 6 5v1h-6',base:'M3 21V7l9-4 9 4v14z M9 21v-7h6v7 M7 10h2 M15 10h2',bag:'M4 8h16l-1 13H5z M9 8V6a3 3 0 0 1 6 0v2',info:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 11v5 M12 8h.01',arrow:'M4 12h15 M13 6l6 6-6 6',pin:'M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11z M12 8a2 2 0 1 0 0 4 2 2 0 0 0 0-4z',clock:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 7v5l3 2',check:'M4 12l5 5L20 6'};
@@ -20,36 +21,6 @@ function Layout(){const route=useLocation();return <><ScrollManager/><Header/><m
 function ItineraryRedirect(){return <Navigate replace to={`/itinerary/${tripPhase(new Date()).day}`}/>}
 function WoodTitle({eyebrow,children}:{eyebrow:string;children:React.ReactNode}){return <div className="wood-title"><span>{eyebrow}</span><h1 id="page-title" tabIndex={-1}>{children}</h1></div>}
 function DaySwitcher({active}:{active?:DayId}){return <div className="day-switcher" aria-label="日付を選択"><Link aria-current={active==='day1'?'page':undefined} to="/itinerary/day1"><span>DAY 1</span><small>10月11日 日</small></Link><Link aria-current={active==='day2'?'page':undefined} to="/itinerary/day2"><span>DAY 2</span><small>10月12日 月</small></Link></div>}
-type PosterHotspot={label:string;to?:string;left:number;top:number;width:number;height:number;kind:'sign'|'character'|'scene';clip:string};
-const signCut='polygon(6% 7%,89% 3%,98% 19%,100% 77%,92% 96%,8% 100%,0 79%,1% 21%)';
-const swordCut='polygon(28% 1%,51% 0,60% 11%,69% 28%,82% 7%,91% 13%,92% 56%,100% 68%,96% 93%,75% 100%,18% 99%,0 84%,8% 58%,16% 44%,16% 18%)';
-const golemCut='polygon(33% 2%,51% 0,70% 9%,77% 25%,79% 40%,94% 48%,100% 65%,88% 73%,78% 69%,82% 91%,71% 100%,26% 100%,16% 91%,20% 72%,4% 71%,0 54%,18% 42%,19% 22%)';
-const buildingCut='polygon(7% 26%,33% 9%,55% 0,90% 18%,99% 32%,95% 95%,4% 100%,0 40%)';
-const homeHotspots:PosterHotspot[]=[
- {label:'ホテルをタップして拠点情報へ',to:'/base',left:43,top:35,width:34,height:19,kind:'scene',clip:buildingCut},
- {label:'パノラマパークの看板を押して予定へ',to:'/itinerary/day1#d1-park',left:0,top:39,width:21,height:8,kind:'sign',clip:signCut},
- {label:'温泉の看板を押して自由行動の予定へ',to:'/itinerary/day1#d1-free',left:82,top:42,width:18,height:8,kind:'sign',clip:signCut},
- {label:'左端の剣士をタップして仲間図鑑へ',to:'/members',left:0,top:54,width:22,height:24,kind:'character',clip:swordCut},
- {label:'左から2人目の剣士をタップして仲間図鑑へ',to:'/members',left:22,top:58,width:18,height:20,kind:'character',clip:swordCut},
- {label:'中央の剣士をタップして仲間図鑑へ',to:'/members',left:40,top:59,width:19,height:20,kind:'character',clip:swordCut},
- {label:'右から2人目の剣士をタップして仲間図鑑へ',to:'/members',left:59,top:56,width:20,height:22,kind:'character',clip:swordCut},
- {label:'右端の剣士をタップして仲間図鑑へ',to:'/members',left:79,top:54,width:21,height:24,kind:'character',clip:swordCut},
- {label:'へぎそばの看板を押して予定へ',to:'/itinerary/day1#d1-lunch',left:0,top:80,width:22,height:9,kind:'sign',clip:signCut},
- {label:'トレッキングの看板を押して予定へ',to:'/itinerary/day1#d1-park',left:22,top:80,width:20,height:9,kind:'sign',clip:signCut},
- {label:'釣りとBBQの看板を押して予定へ',to:'/itinerary/day2#d2-fishing',left:42,top:80,width:19,height:9,kind:'sign',clip:signCut},
- {label:'テニスの看板を押して自由行動の予定へ',to:'/itinerary/day1#d1-free',left:61,top:80,width:20,height:9,kind:'sign',clip:signCut},
- {label:'乾杯の看板を押して夜ご飯の予定へ',to:'/itinerary/day1#d1-dinner',left:81,top:80,width:19,height:9,kind:'sign',clip:signCut},
-];
-const memberHotspots:PosterHotspot[]=[
- {label:'戻るボタンを押してHOMEへ',to:'/',left:2,top:17,width:22,height:8,kind:'sign',clip:signCut},
- {label:'ホームボタンを押してHOMEへ',to:'/',left:78,top:17,width:22,height:8,kind:'sign',clip:signCut},
- {label:'えいじをタップ',left:4,top:35,width:27,height:23,kind:'character',clip:swordCut},
- {label:'ゆうたをタップ',left:70,top:35,width:27,height:23,kind:'character',clip:swordCut},
- {label:'たかひろをタップ',left:31,top:32,width:38,height:34,kind:'character',clip:golemCut},
- {label:'ゆうへいをタップ',left:3,top:64,width:29,height:24,kind:'character',clip:swordCut},
- {label:'りょうをタップ',left:36,top:70,width:29,height:24,kind:'character',clip:swordCut},
- {label:'よしひとをタップ',left:69,top:64,width:29,height:24,kind:'character',clip:swordCut},
-];
 function ImagePoster({kind}:{kind:'home'|'members'}){
  const hotspots=kind==='home'?homeHotspots:memberHotspots;
  const [pressed,setPressed]=useState<number|null>(null);
