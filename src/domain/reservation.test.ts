@@ -18,3 +18,12 @@ test('NASPA booking is shown without an invented check-in time or private paymen
  assert.match(hotel?.planLabel??'',/夕朝食付き/);
  assert.doesNotMatch(JSON.stringify({reservation,hotel,checkin,checkout}),/予約番号|決済|お支払金額/);
 });
+
+test('fishing and BBQ remain walk-in plans, not completed bookings',()=>{
+ const reservation=reservationById('fishing');
+ const event=events.find(row=>row.id==='d2-fishing');
+ assert.equal(reservation?.status,'onsite');
+ assert.match(reservation?.publicNote??'',/現地/);
+ assert.equal(event?.timeLabel,'10:00着');
+ assert.equal(event?.timePrecision,'exact');
+});
